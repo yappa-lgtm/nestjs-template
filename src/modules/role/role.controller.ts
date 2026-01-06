@@ -82,7 +82,7 @@ export class RoleController {
 	@ApiOperation({ summary: 'Find all roles' })
 	@ApiResponse({
 		status: 200,
-		description: 'Roles founded',
+		description: 'Roles found',
 		type: ReadRoleResponse,
 		isArray: true
 	})
