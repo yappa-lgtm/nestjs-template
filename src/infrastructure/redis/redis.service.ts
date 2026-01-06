@@ -31,20 +31,20 @@ export class RedisService
 
 		this.logger.log('Initializing Redis connection...')
 
-        await new Promise<void>((resolve, reject) => {
-            this.once('ready', () => {
-                const ms = Date.now() - start
-                this.logger.log(`Redis connection established: (time=${ms}ms)`)
-                resolve()
-            })
+		await new Promise<void>((resolve, reject) => {
+			this.once('ready', () => {
+				const ms = Date.now() - start
+				this.logger.log(`Redis connection established: (time=${ms}ms)`)
+				resolve()
+			})
 
-            this.once('error', error => {
-                this.logger.error('Redis error during init', {
-                    error: error.message ?? error
-                })
-                reject(error)
-            })
-        })
+			this.once('error', error => {
+				this.logger.error('Redis error during init', {
+					error: error.message ?? error
+				})
+				reject(error)
+			})
+		})
 
 		this.on('connect', () => {
 			this.logger.log('Redis connecting...')

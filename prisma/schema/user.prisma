@@ -1,0 +1,9 @@
+model User {
+  id        String   @id @default(nanoid())
+  username  String   @unique
+  password  String
+  fullName  String   @map("full_name")
+  roles     Role[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}

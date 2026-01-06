@@ -1,6 +1,10 @@
-import { Logger, ValidationPipe } from '@nestjs/common'
+import {
+	ClassSerializerInterceptor,
+	Logger,
+	ValidationPipe
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { NestFactory } from '@nestjs/core'
+import { NestFactory, Reflector } from '@nestjs/core'
 
 import {
 	AllConfigs,
@@ -9,6 +13,7 @@ import {
 	getValidationPipeConfig,
 	setupSwagger
 } from '@/config'
+import { getClassSerializeConfig } from '@/config/loaders/class-serializer.loader'
 
 import { AppModule } from './app.module'
 
@@ -16,6 +21,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule)
 
 	const config = app.get(ConfigService<AllConfigs>)
+	const reflector = app.get(Reflector)
 	const logger = new Logger()
 
 	const { host, port, swaggerUrl, swaggerDocumentYamlUrl } = config.get(
@@ -26,6 +32,10 @@ async function bootstrap() {
 	app.use(getCookieParserConfig(config))
 
 	app.useGlobalPipes(new ValidationPipe(getValidationPipeConfig()))
+
+	app.useGlobalInterceptors(
+		new ClassSerializerInterceptor(reflector, getClassSerializeConfig())
+	)
 
 	app.enableCors(getCorsConfig(config))
 
