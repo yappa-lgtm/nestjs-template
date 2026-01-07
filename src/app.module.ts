@@ -9,7 +9,7 @@ import { MODULES } from '@/modules'
 	imports: [
 		ConfigModule.forRoot(getConfig()),
 		...MODULES,
-		...INFRASTRUCTURE_MODULES
+		...INFRASTRUCTURE_MODULES,
 	]
 })
 export class AppModule {}

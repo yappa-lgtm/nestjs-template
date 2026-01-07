@@ -1,6 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { Role } from '@prisma/generated/client'
-import { RoleCreateInput, RoleUpdateInput } from '@prisma/generated/models/Role'
+import {
+	RoleCreateArgs,
+	RoleCreateInput,
+	RoleDeleteArgs,
+	RoleFindManyArgs,
+	RoleFindUniqueArgs,
+	RoleUpdateArgs,
+	RoleUpdateInput
+} from '@prisma/generated/models/Role'
 
 import { PrismaService } from '@/infrastructure/prisma'
 
@@ -8,30 +16,44 @@ import { PrismaService } from '@/infrastructure/prisma'
 export class RoleRepository {
 	public constructor(private readonly prismaService: PrismaService) {}
 
-	async findByName(name: string): Promise<Role | null> {
-		return this.prismaService.role.findUnique({ where: { name } })
+	async findByName(
+		name: string,
+		args?: Partial<RoleFindUniqueArgs>
+	): Promise<Role | null> {
+		return this.prismaService.role.findUnique({ where: { name }, ...args })
 	}
 
-	async findById(id: string): Promise<Role | null> {
-		return this.prismaService.role.findUnique({ where: { id } })
+	async findById(
+		id: string,
+		args?: Partial<RoleFindUniqueArgs>
+	): Promise<Role | null> {
+		return this.prismaService.role.findUnique({ where: { id }, ...args })
 	}
 
-	async create(data: RoleCreateInput): Promise<Role> {
-		return this.prismaService.role.create({ data })
+	async create(
+		data: RoleCreateInput,
+		args?: Partial<RoleCreateArgs>
+	): Promise<Role> {
+		return this.prismaService.role.create({ data, ...args })
 	}
 
-	async update(id: string, data: RoleUpdateInput): Promise<Role> {
+	async update(
+		id: string,
+		data: RoleUpdateInput,
+		args?: Partial<RoleUpdateArgs>
+	): Promise<Role> {
 		return this.prismaService.role.update({
 			where: { id },
-			data
+			data,
+			...args
 		})
 	}
 
-	async delete(id: string): Promise<Role> {
-		return this.prismaService.role.delete({ where: { id } })
+	async delete(id: string, args?: Partial<RoleDeleteArgs>): Promise<Role> {
+		return this.prismaService.role.delete({ where: { id }, ...args })
 	}
 
-	async findAll(): Promise<Role[]> {
-		return this.prismaService.role.findMany()
+	async findAll(args?: RoleFindManyArgs): Promise<Role[]> {
+		return this.prismaService.role.findMany(args)
 	}
 }

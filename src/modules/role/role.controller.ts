@@ -8,9 +8,8 @@ import {
 	Post
 } from '@nestjs/common'
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import { Role } from '@prisma/generated/client'
 
-import { CreateRoleDto, ReadRoleResponse, UpdateRoleDto } from './dto'
+import { CreateRoleRequest, ReadRoleResponse, UpdateRoleRequest } from './dto'
 import { RoleService } from './role.service'
 
 @ApiTags('Roles')
@@ -32,7 +31,7 @@ export class RoleController {
 
 	@Post()
 	@ApiOperation({ summary: 'Create a new role' })
-	@ApiBody({ type: CreateRoleDto })
+	@ApiBody({ type: CreateRoleRequest })
 	@ApiResponse({
 		status: 201,
 		description: 'Role successfully created',
@@ -42,13 +41,13 @@ export class RoleController {
 		status: 409,
 		description: 'Role with this name already exists'
 	})
-	async create(@Body() dto: CreateRoleDto) {
+	async create(@Body() dto: CreateRoleRequest) {
 		return this.roleService.create(dto)
 	}
 
 	@Patch()
 	@ApiOperation({ summary: 'Update a role' })
-	@ApiBody({ type: UpdateRoleDto })
+	@ApiBody({ type: UpdateRoleRequest })
 	@ApiResponse({
 		status: 200,
 		description: 'Role successfully updated',
@@ -62,7 +61,7 @@ export class RoleController {
 		status: 409,
 		description: 'Role with this name already exists'
 	})
-	async update(@Body() dto: UpdateRoleDto) {
+	async update(@Body() dto: UpdateRoleRequest) {
 		return this.roleService.update(dto)
 	}
 

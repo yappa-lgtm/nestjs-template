@@ -3,10 +3,9 @@ import {
 	Injectable,
 	NotFoundException
 } from '@nestjs/common'
-import { Role } from '@prisma/generated/client'
 import { plainToInstance } from 'class-transformer'
 
-import { CreateRoleDto, ReadRoleResponse, UpdateRoleDto } from './dto'
+import { CreateRoleRequest, ReadRoleResponse, UpdateRoleRequest } from './dto'
 import { RoleRepository } from './role.repository'
 
 @Injectable()
@@ -23,7 +22,7 @@ export class RoleService {
 		return plainToInstance(ReadRoleResponse, roleEntity)
 	}
 
-	async create(dto: CreateRoleDto): Promise<ReadRoleResponse> {
+	async create(dto: CreateRoleRequest): Promise<ReadRoleResponse> {
 		const existedEntity = await this.roleRepository.findByName(dto.name)
 
 		if (existedEntity) {
@@ -35,7 +34,7 @@ export class RoleService {
 		return plainToInstance(ReadRoleResponse, roleEntity)
 	}
 
-	async update(dto: UpdateRoleDto) {
+	async update(dto: UpdateRoleRequest) {
 		const { id, name } = dto
 
 		const existedRole = await this.roleRepository.findById(id)
@@ -68,7 +67,7 @@ export class RoleService {
 
 		const deletedEntity = await this.roleRepository.delete(id)
 
-		return
+		return plainToInstance(ReadRoleResponse, deletedEntity)
 	}
 
 	async findAll() {

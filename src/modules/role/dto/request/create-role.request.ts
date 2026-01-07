@@ -2,7 +2,7 @@ import {Permission} from '@prisma/generated/enums'
 import {ApiRoleDescriptionProperty, ApiRoleNameProperty, ApiRolePermissionsProperty} from "@/modules/role/decorators";
 
 
-export class CreateRoleDto {
+export class CreateRoleRequest {
     @ApiRoleNameProperty()
     public name: string
 
